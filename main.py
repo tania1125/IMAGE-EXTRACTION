@@ -4,9 +4,7 @@ import fitz
 fitz.restore_aliases()
 import io
 from PIL import Image
-from PyQt5 import QtWidgets as qtw
-from PyQt5 import QtGul as qtg
-from PyQt5 import QtCore as qtc
+
 
 # STEP 2
 # file path you want to extract images from
@@ -26,3 +24,18 @@ if image_list:
 else:
 		print(" No images found on page")
 #To see those images and save from those	
+for image in image_list:
+      xref=image[0]
+      pix=fitz.Pixmap(pdf_file,xref)
+      #if pix.n<5:
+           # pix.save(f'{xref}.jpg')#
+      if not pix.colorspace.name in (fitz.csGRAY.name, fitz.csRGB.name):
+        pix = fitz.Pixmap(fitz.csRGB, pix)
+      else:
+            pix1=fitz.open(fitz.csRGB,pix)
+            print(pix1)
+            pix1.save(f'{ln}.png')
+            #pix1.save(f'{image_list}.png')
+            pix1=None
+      pix=None
+print(len(image_list),'detected')
